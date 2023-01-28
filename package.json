@@ -1,0 +1,19 @@
+{
+  "name": "keep-alive-vue3",
+  "version": "1.0.0",
+  "keywords": ["vue3", "keep-alive", "router-view", "cache"],
+  "scripts": {
+    "build": "rollup --config",
+    "pub": "npm run build && npm publish"
+  },
+  "main": "./lib/main.js",
+  "dependencies": {
+    "vue": "^3.0.0",
+    "vue-router": "^4.0.0-0"
+  },
+  "homepage": "https://github.com/deep-fish-pixel/keep-alive-vue3#readme",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/deep-fish-pixel/keep-alive-vue3.git"
+  }
+}
