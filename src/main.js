@@ -41,7 +41,7 @@ const Main = {
         return true;
       }
       setTimeout(() => {
-        if (!wrapRouter.getKeepAlive() && this.cached) {
+        if (!this.cached) {
           this.deleteCache(to);
         }
         wrapRouter.setKeepAlive(true);
@@ -75,21 +75,39 @@ const Main = {
       ref: 'keepAlive'
     };
     const $route = this.$route;
-    const isCached = this.cached;
 
-    return createVNode(resolveComponent('router-view'), {
+    return createVNode(
+      resolveComponent('router-view'), {
         name: this.name
       }, {
         default: withCtx(function ({ Component }) {
-          return [(openBlock(), createBlock(KeepAlive, keepAliveProps, [isCached ? (openBlock(), createBlock(resolveDynamicComponent(Component), {
-              key: $route.name
-            })) : createCommentVNode("v-if", true)], 1032
-            , ["include", "exclude", "max"])), !isCached ? (openBlock(), createBlock(resolveDynamicComponent(Component), {
-            key: $route.name
-          })) :createCommentVNode("v-if", true)];
+          return [
+            (
+              openBlock(),
+              createBlock(
+                KeepAlive,
+                keepAliveProps,
+                [
+                  (
+                    openBlock(),
+                    createBlock(
+                      resolveDynamicComponent(Component), {
+                        key: $route.name
+                      }
+                    )
+                  )
+                ],
+                1032,
+                ["include", "exclude", "max"]
+              )
+            ),
+            createCommentVNode("v-if", true)
+          ];
         })
-      }, 8
-      , ["name"]);
+      },
+      8,
+      ["name"]
+    );
   }
 };
 
