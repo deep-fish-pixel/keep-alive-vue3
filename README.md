@@ -62,8 +62,6 @@ The cache attribute is used to cache the use of page caching.
 | exclude | any component whose name matches will not be cached       | RegExp  | - | -       |
 | max | maximum number of component instances that can be cached  | Number  | - | -       |
 
-### [Example](https://codesandbox.io/s/vue3-keep-alive-vue3-d2o4k5)
-
 ### vue-router interface extensions
 
 #### $router.push
