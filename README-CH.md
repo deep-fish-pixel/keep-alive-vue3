@@ -1,7 +1,7 @@
 # keep-alive-vue3
 扩展vue3的keep-alive and router-view，可以自动判断是否需要使用缓存功能。
 与router-view不同，该工具默认是不缓存页面内容，仅在keep-alive-vue3配置了cached为true值的情况下缓存指定页面。
-对vue3的支持[点击这里](https://github.com/deep-fish-pixel/router-view-keep-alive)
+对vue2的支持[点击这里](https://www.npmjs.com/package/keep-alive-vue2)
 
 ### 背景
 
