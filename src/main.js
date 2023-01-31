@@ -17,15 +17,17 @@ const Main = {
     exclude: RegExp,
     max: Number,
     name: String,
-    cached: Boolean
+    cache: Boolean,
+    defaultCache: Boolean,
   },
   data() {
+    wrapRouter.setDefaultCached(this.defaultCache);
     return {
       hasDestroyed: false,
       current: null,
+      firstLoadPage: true,
     };
   },
-
   methods: {
     before(to, from, next) {
       if (this.hasDestroyed) {
@@ -36,31 +38,27 @@ const Main = {
       }
       next();
     },
-    after(to) {
+    after() {
       if (this.hasDestroyed) {
         return true;
       }
       setTimeout(() => {
-        if (!this.cached) {
-          this.deleteCache(to);
-        }
         wrapRouter.setKeepAlive(true);
       }, 10);
     },
     deleteCache(router){
       const keepAlive = this.$refs.keepAlive;
-      const cache = keepAlive && keepAlive.$ && keepAlive.$.__v_cache;
-      if (cache) {
-        this.current = cache.get(router.name);
+      const vCache = keepAlive && keepAlive.$ && keepAlive.$.__v_cache;
+      if (vCache) {
+        this.current = vCache.get(router.fullPath);
         if (this.current) {
-          cache.delete(router.name);
+          vCache.delete(router.fullPath);
         }
       }
     }
   },
 
   created() {
-    wrapRouter.wrap(this.$router);
     this.$router.beforeEach(this.before);
     this.$router.afterEach(this.after);
   },
@@ -75,6 +73,9 @@ const Main = {
       ref: 'keepAlive'
     };
     const $route = this.$route;
+    if (!this.cache) {
+      this.deleteCache($route);
+    }
 
     return createVNode(
       resolveComponent('router-view'), {
@@ -84,22 +85,22 @@ const Main = {
           return [
             (
               openBlock(),
-              createBlock(
-                KeepAlive,
-                keepAliveProps,
-                [
-                  (
-                    openBlock(),
-                    createBlock(
-                      resolveDynamicComponent(Component), {
-                        key: $route.name
-                      }
+                createBlock(
+                  KeepAlive,
+                  keepAliveProps,
+                  [
+                    (
+                      openBlock(),
+                        createBlock(
+                          resolveDynamicComponent(Component), {
+                            key: $route.fullPath
+                          }
+                        )
                     )
-                  )
-                ],
-                1032,
-                ["include", "exclude", "max"]
-              )
+                  ],
+                  1032,
+                  ["include", "exclude", "max"]
+                )
             ),
             createCommentVNode("v-if", true)
           ];
@@ -114,5 +115,10 @@ const Main = {
 export default {
   install: (app) => {
     app.component(Main.name, Main);
+    if(!app.config.globalProperties.$router){
+      console.error('Keep-alive-vue3 should install after vue-router! Otherwise, it may cause partial failure.');
+      return;
+    }
+    wrapRouter.wrap(app.config.globalProperties.$router);
   }
 };

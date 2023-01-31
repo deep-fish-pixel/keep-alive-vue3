@@ -1,8 +1,15 @@
 const objectClass = Object;
-// 解决跨微前端问题
+// 解决通讯问题
 objectClass.__keepAlive = true;
+var defaultCache = false;
 
 const wrapRouter = {
+  getDefaultCached() {
+    return defaultCache;
+  },
+  setDefaultCached(value) {
+    defaultCache = value;
+  },
   getKeepAlive() {
     return objectClass.__keepAlive;
   },
@@ -10,36 +17,55 @@ const wrapRouter = {
     objectClass.__keepAlive = useKeepAlive;
   },
   wrap(router) {
-    const { push, go } = router;
+    const { push, replace, go } = router;
+
+    function checkSetCache(location) {
+      return location && (typeof location.cache === 'boolean' || typeof location.keepAlive === 'boolean');
+    }
+
+    function setCache(location) {
+      if (location && typeof location.cache === 'boolean') {
+        wrapRouter.setKeepAlive(location.cache);
+      } else if (location && (typeof location.keepAlive === 'boolean')) {
+        wrapRouter.setKeepAlive(location.keepAlive);
+      }
+    }
 
     router.push = function(...args) {
       const location = args[0];
 
-      if (location && typeof location.cached === 'boolean') {
-        wrapRouter.setKeepAlive(location.cached);
-      } else if (location && (typeof location.keepAlive === 'boolean')) {
-        wrapRouter.setKeepAlive(location.keepAlive);
-      }  else {
-        wrapRouter.setKeepAlive(false);
+      if (checkSetCache(location)) {
+        setCache(location);
+      } else {
+        wrapRouter.setKeepAlive(wrapRouter.getDefaultCached());
       }
       return push.apply(this, args);
     };
+    router.replace = function(...args) {
+      const location = args[0];
+
+      if (checkSetCache(location)) {
+        setCache(location);
+      } else {
+        wrapRouter.setKeepAlive(wrapRouter.getDefaultCached());
+      }
+      return replace.apply(this, args);
+    };
     router.back = function(options) {
-      if (options && typeof options.cached === 'boolean') {
-        wrapRouter.setKeepAlive(objectClass.__keepAlive);
-      } else if (options && (typeof options.keepAlive === 'boolean')) {
-        wrapRouter.setKeepAlive(options.keepAlive);
+      if (checkSetCache(location)) {
+        setCache(location);
+      } else {
+        wrapRouter.setKeepAlive(true);
       }
       return go.apply(this, [-1]);
     };
     router.go = function(num, options) {
-      if (num > 0) {
-        wrapRouter.setKeepAlive(false);
-      }
-      if (options && typeof options.cached === 'boolean') {
-        wrapRouter.setKeepAlive(objectClass.__keepAlive);
-      } else if (options && (typeof options.keepAlive === 'boolean')) {
-        wrapRouter.setKeepAlive(options.keepAlive);
+      if (checkSetCache(location)) {
+        setCache(location);
+      } else if (num > 0) {
+        wrapRouter.setKeepAlive(wrapRouter.getDefaultCached());
+      } else {
+        wrapRouter.setKeepAlive(true);
       }
       return go.apply(this, [num]);
     };
