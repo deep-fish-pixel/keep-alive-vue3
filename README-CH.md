@@ -94,8 +94,8 @@ this.$router.go(-1, {
 });
 ```
 
-### keep-alive属性cache和$router接口参数cache配置缓存是否生效
-| keep-alive cache | $router cache   | 是否使用缓存 |
+### keep-alive-vue3属性cache和$router接口参数cache的值决定页面是否使用缓存
+| keep-alive-vue3 cache | $router cache   | 是否使用缓存 |
 |------------------|-----------------|--------|
 | true             | true            | 是      |
 | true             | false           | 否      |
