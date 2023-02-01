@@ -38,7 +38,7 @@ cached属性，用来设置使用页面缓存。
 ```
 ##### Example2
 ```
-<-- 使用缓存，用于带标签页管理器的项目 -->
+<-- 默认使用缓存，用于带标签页管理器的项目 -->
 <keep-alive-vue3
     :cache="!$route.meta || !$route.meta.noCache"
     :defaultCache="true" />
