@@ -73,36 +73,37 @@ const Main = {
       ref: 'keepAlive'
     };
     const $route = this.$route;
-    if (!this.cache) {
+    const cache = this.cache;
+    if (!cache) {
       this.deleteCache($route);
     }
 
-    return createVNode(
-      resolveComponent('router-view'), {
+    return createVNode(resolveComponent('router-view'), {
         name: this.name
       }, {
         default: withCtx(function ({ Component }) {
           return [
             (
               openBlock(),
-                createBlock(
-                  KeepAlive,
-                  keepAliveProps,
-                  [
-                    (
-                      openBlock(),
-                        createBlock(
-                          resolveDynamicComponent(Component), {
-                            key: $route.fullPath
-                          }
-                        )
-                    )
-                  ],
-                  1032,
-                  ["include", "exclude", "max"]
-                )
+              createBlock(
+                KeepAlive,
+                keepAliveProps,
+                [
+                  cache ? (openBlock(), createBlock(resolveDynamicComponent(Component), {
+                      key: $route.name
+                    })) :
+                    createCommentVNode("v-if", true)
+                ],
+                1032,
+                ["include", "exclude", "max"]
+              )
             ),
-            createCommentVNode("v-if", true)
+            !cache ? (
+              openBlock(),
+              createBlock(resolveDynamicComponent(Component), {
+                key: $route.name
+              })
+            ) : createCommentVNode("v-if", true)
           ];
         })
       },

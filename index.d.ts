@@ -27,6 +27,6 @@ declare module 'vue-router' {
          * https://developer.mozilla.org/en-US/docs/Web/API/History/state
          */
         state?: HistoryState;
-        cached?: Boolean;
+        cache?: Boolean;
     }
 }
