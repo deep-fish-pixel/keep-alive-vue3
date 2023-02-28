@@ -90,7 +90,7 @@ const Main = {
                 keepAliveProps,
                 [
                   cache ? (openBlock(), createBlock(resolveDynamicComponent(Component), {
-                      key: $route.name
+                      key: $route.fullPath
                     })) :
                     createCommentVNode("v-if", true)
                 ],
@@ -101,7 +101,7 @@ const Main = {
             !cache ? (
               openBlock(),
               createBlock(resolveDynamicComponent(Component), {
-                key: $route.name
+                key: $route.fullPath
               })
             ) : createCommentVNode("v-if", true)
           ];
