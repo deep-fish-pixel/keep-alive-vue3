@@ -59,39 +59,41 @@ cached属性，用来设置使用页面缓存。
 
 ### vue-router接口扩展
 
-#### $router.push
-push接口展示的页面默认不缓存功能。如果需要使用，配置cache为true。
+#### $router.push/replace
+push/replace接口展示的页面默认不缓存功能。如果需要使用，配置cache为true。
 _注意defaultCache可改变默认缓存。_
+
 ```javascript
+// 默认禁止缓存
+this.$router.push({
+  name: 'list',
+});
+this.$router.replace({
+  name: 'list',
+});
+
+// 使用缓存
 this.$router.push({
   name: 'list',
   cache: true
 });
-```
-#### $router.replace
-push接口展示的页面默认不缓存功能。如果需要使用，配置cache为true。
-_注意defaultCache可改变默认缓存。_
-```javascript
 this.$router.replace({
   name: 'list',
   cache: true
 });
 ```
-#### $router.back
+#### $router.back/forward/go
 back接口展示的页面默认优先使用缓存的内容。如果禁止使用，配置cache为false
 ```javascript
-this.$router.back({
-  cache: false
-});
-```
+// 默认使用缓存
+this.$router.back();
+this.$router.forward();
+this.$router.go(1);
 
-#### $router.go
-go接口展示的页面，小于0默认使用缓存功能，大于0默认不使用缓存。如果不使用，需配置cache为false
-_参数大于0时，注意defaultCache可改变默认缓存。_
-```javascript
-this.$router.go(-1, {
-  cache: false
-});
+// 禁止使用缓存
+this.$router.back({cache: false});
+this.$router.forward({cache: false});
+this.$router.go(1, {cache: false});
 ```
 
 ### keep-alive-vue3属性cache和$router接口参数cache的值决定页面是否使用缓存

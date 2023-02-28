@@ -51,22 +51,14 @@ const wrapRouter = {
       }
       return replace.apply(this, args);
     };
-    router.back = function(options) {
-      if (checkSetCache(location)) {
-        setCache(location);
-      } else {
-        wrapRouter.setKeepAlive(true);
-      }
-      return go.apply(this, [-1]);
+    router.back = function(options = { cache: true }) {
+      return go.apply(this, [-1, { cache: !!options.cache }]);
     };
-    router.go = function(num, options) {
-      if (checkSetCache(location)) {
-        setCache(location);
-      } else if (num > 0) {
-        wrapRouter.setKeepAlive(wrapRouter.getDefaultCached());
-      } else {
-        wrapRouter.setKeepAlive(true);
-      }
+    router.forward = function(options = { cache: true }) {
+      return go.apply(this, [1, { cache: !!options.cache }]);
+    };
+    router.go = function(num, options = { cache: true }) {
+      wrapRouter.setKeepAlive(!!options.cache);
       return go.apply(this, [num]);
     };
   }

@@ -64,49 +64,46 @@ The cache attribute is used to cache the use of page caching.
 
 ### vue-router interface extensions
 
-#### $router.push
+#### $router.push/replace
 
-The page displayed by the push interface does not use the cache function by default. If you need to use it, configure cache to true
+The page displayed by the push/replace interface does not use the cache function by default. If you need to use it, configure cache to true
 _Note that defaultCache can change the default cache_
 
 ```javascript
+// disable cache
+this.$router.push({
+  name: 'list',
+});
+this.$router.replace({
+  name: 'list',
+});
+
+// use cache
 this.$router.push({
   name: 'list',
   cache: true
 });
-```
-#### $router.replace
-
-The page displayed by the replace interface does not use the cache function by default. If you need to use it, configure cache to true
-_Note that defaultCache can change the default cache_
-
-```javascript
 this.$router.replace({
   name: 'list',
   cache: true
 });
 ```
-#### $router.back
 
-The page displayed by the back interface uses the cache function by default.
+#### $router.back/forward/go
+
+The page displayed by the back/forward/go interface uses the cache function by default.
 If not use cached page, configure cache to false
 
 ```javascript
-this.$router.back({
-  cache: false
-});
-```
+// defaut use cache
+this.$router.back();
+this.$router.forward();
+this.$router.go(1);
 
-#### $router.go
-
-The page displayed by the go interface uses the cache function by default when it is less than 0, and the cache is prohibited by default when it is greater than 0.
-If not use cached page, configure cache to false
-_Note that defaultCache can change the default cache_
-
-```javascript
-this.$router.go(-1, {
-  cache: false
-});
+// disable cache
+this.$router.back({cache: false});
+this.$router.forward({cache: false});
+this.$router.go(1, {cache: false});
 ```
 
 ### keep-alive-vue3 attribute cache and $router interface parameter cache values determine whether the page uses cache.

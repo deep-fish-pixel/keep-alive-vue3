@@ -29,4 +29,10 @@ declare module 'vue-router' {
         state?: HistoryState;
         cache?: Boolean;
     }
+
+    export interface Router {
+        back({ cache: boolean }): ReturnType<Router['go']>;
+        forward({ cache: boolean }): ReturnType<Router['go']>;
+        go(delta: number, { cache: boolean }): void;
+    }
 }
