@@ -59,45 +59,45 @@ cached属性，用来设置使用页面缓存。
 
 ### vue-router接口扩展
 
-#### $router.push/replace
+#### router.push/replace
 push/replace接口展示的页面默认不缓存功能。如果需要使用，配置cache为true。
 _注意defaultCache可改变默认缓存。_
 
 ```javascript
 // 默认禁止缓存
-this.$router.push({
+router.push({
   name: 'list',
 });
-this.$router.replace({
+router.replace({
   name: 'list',
 });
 
 // 使用缓存
-this.$router.push({
+router.push({
   name: 'list',
   cache: true
 });
-this.$router.replace({
+router.replace({
   name: 'list',
   cache: true
 });
 ```
-#### $router.back/forward/go
+#### router.back/forward/go
 back接口展示的页面默认优先使用缓存的内容。如果禁止使用，配置cache为false
 ```javascript
 // 默认使用缓存
-this.$router.back();
-this.$router.forward();
-this.$router.go(1);
+router.back();
+router.forward();
+router.go(1);
 
 // 禁止使用缓存
-this.$router.back({cache: false});
-this.$router.forward({cache: false});
-this.$router.go(1, {cache: false});
+router.back({cache: false});
+router.forward({cache: false});
+router.go(1, {cache: false});
 ```
 
-### keep-alive-vue3属性cache和$router接口参数cache的值决定页面是否使用缓存
-| keep-alive-vue3 cache | $router cache   | 是否使用缓存 |
+### keep-alive-vue3属性cache和router接口参数cache的值决定页面是否使用缓存
+| keep-alive-vue3 cache | router cache   | 是否使用缓存 |
 |------------------|-----------------|--------|
 | true             | true            | 是      |
 | true             | false           | 否      |

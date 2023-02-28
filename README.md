@@ -12,7 +12,7 @@ When the user enters the page from the navigation menu or breadcrumb, a brand ne
 
 keep-alive-vue3 solves this problem.
 
-It uses the cache when you operate $router.back and $router.go to return the page by default, and $router.push and $router.replace do not use the cache by default.
+It uses the cache when you operate router.back and router.go to return the page by default, and router.push and router.replace do not use the cache by default.
 
 ### Install
 
@@ -49,14 +49,14 @@ The cache attribute is used to cache the use of page caching.
     :defaultCache="true" />
 ```
 
-#### Third: must use the method of the vue-router instance. Only after $router.go and $router.back are called, the cached page is used.
+#### Third: must use the method of the vue-router instance. Only after router.go and router.back are called, the cached page is used.
 
 ### keep-alive-vue3 properties descriptions
 
 | property | description                                                                                             | type | option | default |
 | --- |---------------------------------------------------------------------------------------------------------| --- | --- |---------|
 | cache | whether to cache page                                                                                   | Boolean  | true/false | false   |
-| defaultCache | $router.push、$router.replace and $router.go(value is greater than 0) parameter cache will use the value | Boolean | true/false | false |
+| defaultCache | router.push、router.replace and router.go(value is greater than 0) parameter cache will use the value | Boolean | true/false | false |
 | name | router-view name                                                                                        | String  | - | -       |
 | include | only components with matching names will be cached                                                      | RegExp  | - | -       |
 | exclude | any component whose name matches will not be cached                                                     | RegExp  | - | -       |
@@ -64,50 +64,50 @@ The cache attribute is used to cache the use of page caching.
 
 ### vue-router interface extensions
 
-#### $router.push/replace
+#### router.push/replace
 
 The page displayed by the push/replace interface does not use the cache function by default. If you need to use it, configure cache to true
 _Note that defaultCache can change the default cache_
 
 ```javascript
 // disable cache
-this.$router.push({
+router.push({
   name: 'list',
 });
-this.$router.replace({
+router.replace({
   name: 'list',
 });
 
 // use cache
-this.$router.push({
+router.push({
   name: 'list',
   cache: true
 });
-this.$router.replace({
+router.replace({
   name: 'list',
   cache: true
 });
 ```
 
-#### $router.back/forward/go
+#### router.back/forward/go
 
 The page displayed by the back/forward/go interface uses the cache function by default.
 If not use cached page, configure cache to false
 
 ```javascript
 // defaut use cache
-this.$router.back();
-this.$router.forward();
-this.$router.go(1);
+router.back();
+router.forward();
+router.go(1);
 
 // disable cache
-this.$router.back({cache: false});
-this.$router.forward({cache: false});
-this.$router.go(1, {cache: false});
+router.back({cache: false});
+router.forward({cache: false});
+router.go(1, {cache: false});
 ```
 
-### keep-alive-vue3 attribute cache and $router interface parameter cache values determine whether the page uses cache.
-| keep-alive-vue3 cache | $router cache   | Whether to use cache |
+### keep-alive-vue3 attribute cache and router interface parameter cache values determine whether the page uses cache.
+| keep-alive-vue3 cache | router cache   | Whether to use cache |
 |------------------|-----------------|----------------------|
 | true             | true            | Yes                  |
 | true             | false           | Not                  |
