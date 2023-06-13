@@ -52,9 +52,11 @@ const wrapRouter = {
       return replace.apply(this, args);
     };
     router.back = function(options = { cache: true }) {
+      wrapRouter.setKeepAlive(!!options.cache);
       return go.apply(this, [-1, { cache: !!options.cache }]);
     };
     router.forward = function(options = { cache: true }) {
+      wrapRouter.setKeepAlive(!!options.cache);
       return go.apply(this, [1, { cache: !!options.cache }]);
     };
     router.go = function(num, options = { cache: true }) {
